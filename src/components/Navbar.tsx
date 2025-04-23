@@ -1,5 +1,5 @@
 
-import { Bell, Calendar, ChartLine, FileText, User } from "lucide-react";
+import { Bell, Calendar, ChartLine, FileText, FolderKanban, User } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
@@ -8,6 +8,7 @@ export function Navbar() {
   
   const navItems = [
     { icon: ChartLine, label: "Dashboard", path: "/" },
+    { icon: FolderKanban, label: "Proyectos", path: "/projects" },
     { icon: FileText, label: "Tareas", path: "/tasks" },
     { icon: User, label: "Equipo", path: "/team" },
     { icon: Calendar, label: "Calendario", path: "/calendar" },
