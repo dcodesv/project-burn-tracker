@@ -1,6 +1,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import { CirclePercent } from "lucide-react";
 import { openProjectAPI } from "@/lib/api";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 
@@ -44,10 +45,25 @@ export default function ProjectsPage() {
             onClick={() => navigate(`/projects/${project.id}`)}
           >
             <CardHeader>
-              <CardTitle className="text-xl text-project-700">{project.name}</CardTitle>
-              <CardDescription className="text-sm text-muted-foreground">
-                {project.identifier}
-              </CardDescription>
+              <div className="flex items-start justify-between">
+                <div className="flex-1">
+                  <CardTitle className="text-xl text-project-700">{project.name}</CardTitle>
+                  <CardDescription className="text-sm text-muted-foreground">
+                    {project.identifier}
+                  </CardDescription>
+                </div>
+                <div className="relative shrink-0">
+                  <CirclePercent 
+                    className="h-12 w-12 text-project-600"
+                    style={{
+                      '--progress': `${project.percentComplete || 0}%`,
+                    } as React.CSSProperties}
+                  />
+                  <span className="absolute inset-0 flex items-center justify-center text-xs font-medium">
+                    {project.percentComplete || 0}%
+                  </span>
+                </div>
+              </div>
             </CardHeader>
             <CardContent>
               <p className="text-sm text-gray-600 line-clamp-2">
