@@ -1,14 +1,19 @@
-// Update this page (the content is just a fallback if you fail to update the page)
 
-const Index = () => {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
-      </div>
-    </div>
-  );
-};
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { openProjectAPI } from '@/lib/api';
 
-export default Index;
+export default function Index() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // If authenticated, redirect to dashboard, otherwise to login
+    if (openProjectAPI.isAuthenticated()) {
+      navigate('/');
+    } else {
+      navigate('/login');
+    }
+  }, [navigate]);
+
+  return null; // No necesitamos renderizar nada ya que redirigimos
+}
