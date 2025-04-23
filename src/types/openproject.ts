@@ -1,4 +1,3 @@
-
 export interface Project {
   id: string;
   name: string;
@@ -7,6 +6,7 @@ export interface Project {
   createdAt: string;
   updatedAt: string;
   status: string;
+  percentComplete?: number;
 }
 
 export interface WorkPackage {

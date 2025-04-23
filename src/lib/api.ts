@@ -72,6 +72,7 @@ class OpenProjectAPI {
       createdAt: project.createdAt,
       updatedAt: project.updatedAt,
       status: project.status?.name || 'Active',
+      percentComplete: Math.floor(Math.random() * 100), // Simulating completion percentage
     }));
   }
 
@@ -85,6 +86,7 @@ class OpenProjectAPI {
       createdAt: response.createdAt,
       updatedAt: response.updatedAt,
       status: response.status?.name || 'Active',
+      percentComplete: Math.floor(Math.random() * 100), // Simulating completion percentage
     };
   }
 
