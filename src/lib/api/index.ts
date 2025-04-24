@@ -29,4 +29,3 @@ class OpenProjectAPI extends OpenProjectClient {
 }
 
 export const openProjectAPI = new OpenProjectAPI();
-
