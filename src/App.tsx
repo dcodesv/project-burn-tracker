@@ -9,6 +9,7 @@ import ProjectsPage from "./pages/ProjectsPage";
 import ProjectDetailPage from "./pages/ProjectDetailPage";
 import TasksPage from "./pages/TasksPage";
 import TeamPage from "./pages/TeamPage";
+import WorkloadPage from "./pages/WorkloadPage";
 import CalendarPage from "./pages/CalendarPage";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
