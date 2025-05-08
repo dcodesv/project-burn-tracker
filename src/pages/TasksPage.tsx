@@ -1,5 +1,5 @@
-
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { openProjectAPI } from "@/lib/api";
 import { WorkPackage } from "@/types/openproject";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -17,7 +17,6 @@ import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Calendar, User, Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -28,7 +27,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 export default function TasksPage() {
-  const navigate = useNavigate();
+  const { projectId } = useParams<{ projectId: string }>();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [workPackages, setWorkPackages] = useState<WorkPackage[]>([]);
@@ -38,9 +37,9 @@ export default function TasksPage() {
   const [typeFilter, setTypeFilter] = useState<string | null>(null);
 
   useEffect(() => {
-    // Check if user is authenticated
-    if (!openProjectAPI.isAuthenticated()) {
-      navigate("/login");
+    if (!projectId) {
+      setError("ID de proyecto no especificado");
+      setIsLoading(false);
       return;
     }
 
@@ -48,18 +47,8 @@ export default function TasksPage() {
       try {
         setIsLoading(true);
         setError(null);
-
-        // Fetch projects first (to get the first project ID)
-        const projects = await openProjectAPI.getProjects();
-        if (projects.length === 0) {
-          setError("No se encontraron proyectos en tu instancia de OpenProject.");
-          return;
-        }
-
-        // Use the first project by default
-        const projectId = projects[0].id;
         
-        // Fetch work packages for the selected project
+        // Fetch work packages for the project from URL params
         const fetchedWorkPackages = await openProjectAPI.getWorkPackages(projectId);
         setWorkPackages(fetchedWorkPackages);
         setFilteredWorkPackages(fetchedWorkPackages);
@@ -72,7 +61,7 @@ export default function TasksPage() {
     };
 
     fetchWorkPackages();
-  }, [navigate]);
+  }, [projectId]);
 
   useEffect(() => {
     // Apply filters whenever the filter criteria change
@@ -102,12 +91,10 @@ export default function TasksPage() {
 
   if (isLoading) {
     return (
-      <div className="container py-8">
-        <div className="flex items-center justify-center min-h-[60vh]">
-          <div className="flex flex-col items-center gap-2">
-            <div className="h-8 w-8 animate-spin rounded-full border-4 border-t-project-600 border-r-transparent border-b-project-300 border-l-transparent"></div>
-            <p className="text-sm text-muted-foreground">Cargando tareas...</p>
-          </div>
+      <div className="flex items-center justify-center min-h-[40vh]">
+        <div className="flex flex-col items-center gap-2">
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-t-project-600 border-r-transparent border-b-project-300 border-l-transparent"></div>
+          <p className="text-sm text-muted-foreground">Cargando tareas...</p>
         </div>
       </div>
     );
@@ -115,23 +102,14 @@ export default function TasksPage() {
 
   if (error) {
     return (
-      <div className="container py-8">
-        <Alert variant="destructive" className="max-w-md mx-auto">
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
-        <div className="flex justify-center mt-4">
-          <Button onClick={() => window.location.reload()}>
-            Reintentar
-          </Button>
-        </div>
-      </div>
+      <Alert variant="destructive" className="max-w-md mx-auto">
+        <AlertDescription>{error}</AlertDescription>
+      </Alert>
     );
   }
 
   return (
-    <div className="container py-8">
-      <h1 className="text-3xl font-bold text-project-800 mb-6">Tareas del proyecto</h1>
-
+    <div>
       <Card className="mb-8">
         <CardHeader className="pb-2">
           <CardTitle>Lista de tareas</CardTitle>

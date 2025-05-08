@@ -36,32 +36,25 @@ export default function ProjectDetailPage() {
 
   if (isLoadingProject || isLoadingWorkPackages) {
     return (
-      <div className="container py-8">
-        <div className="flex items-center justify-center min-h-[60vh]">
-          <div className="h-8 w-8 animate-spin rounded-full border-4 border-t-project-600 border-r-transparent border-b-project-300 border-l-transparent"></div>
-        </div>
+      <div className="flex items-center justify-center min-h-[40vh]">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-t-project-600 border-r-transparent border-b-project-300 border-l-transparent"></div>
       </div>
     );
   }
 
   if (!project || !workPackages) {
     return (
-      <div className="container py-8">
-        <div className="text-center">
-          <h2 className="text-2xl font-semibold text-destructive">Error</h2>
-          <p className="mt-2 text-muted-foreground">Proyecto no encontrado</p>
-        </div>
+      <div className="text-center">
+        <h2 className="text-2xl font-semibold text-destructive">Error</h2>
+        <p className="mt-2 text-muted-foreground">Proyecto no encontrado</p>
       </div>
     );
   }
 
   return (
-    <div className="container py-8">
+    <div>
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-project-800">{project.name}</h1>
-        {project.description && (
-          <p className="mt-2 text-muted-foreground">{project.description}</p>
-        )}
+        <p className="mt-2 text-muted-foreground">{project.description}</p>
       </div>
 
       <DashboardSummary project={project} workPackages={workPackages} />
