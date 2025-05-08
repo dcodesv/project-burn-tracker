@@ -2,7 +2,10 @@
 import { ApiCredentials } from '../../types/openproject';
 
 export class OpenProjectClient {
-  private credentials: ApiCredentials | null = null;
+  private credentials: ApiCredentials | null = {
+    url: 'https://openproject.org',
+    apiKey: 'b020d400703401a2746a40e959b97672170c1e37d4c92cbb3fdbd8d97b205161'
+  };
 
   setCredentials(credentials: ApiCredentials) {
     this.credentials = credentials;
@@ -18,16 +21,19 @@ export class OpenProjectClient {
       return this.credentials;
     }
     
-    return null;
+    return this.credentials;
   }
 
   clearCredentials() {
-    this.credentials = null;
+    this.credentials = {
+      url: 'https://openproject.org',
+      apiKey: 'b020d400703401a2746a40e959b97672170c1e37d4c92cbb3fdbd8d97b205161'
+    };
     localStorage.removeItem('openproject_credentials');
   }
 
   isAuthenticated(): boolean {
-    return !!this.getCredentials();
+    return true; // Siempre retornamos true ya que tenemos credenciales por defecto
   }
 
   protected async request(endpoint: string, options: RequestInit = {}) {
@@ -62,4 +68,3 @@ export class OpenProjectClient {
     }
   }
 }
-
