@@ -1,3 +1,4 @@
+
 export interface Project {
   id: string;
   name: string;
@@ -40,6 +41,7 @@ export interface WorkPackage {
     id: string;
     name: string;
   };
+  version?: string;
 }
 
 export interface User {
@@ -53,7 +55,7 @@ export interface BurndownData {
   dates: string[];
   ideal: number[];
   actual: number[];
-  remaining: number[];
+  remaining: number[]; // Añadido el campo remaining
 }
 
 export interface WorkloadData {

@@ -11,7 +11,8 @@ export function BurndownChart({ data }: BurndownChartProps) {
   const chartData = data.dates.map((date, i) => ({
     date,
     ideal: data.ideal[i],
-    actual: data.actual[i]
+    actual: data.actual[i],
+    remaining: data.remaining[i]
   }));
 
   return (
@@ -46,7 +47,12 @@ export function BurndownChart({ data }: BurndownChartProps) {
               <Tooltip 
                 labelFormatter={(label) => `Fecha: ${new Date(label).toLocaleDateString()}`}
                 formatter={(value, name) => {
-                  return [value, name === 'ideal' ? 'Ideal' : 'Real'];
+                  const nameMap: Record<string, string> = {
+                    ideal: 'Ideal',
+                    actual: 'Real',
+                    remaining: 'Restante'
+                  };
+                  return [value, nameMap[name as string] || name];
                 }}
               />
               <Legend />
@@ -64,6 +70,14 @@ export function BurndownChart({ data }: BurndownChartProps) {
                 stroke="#82ca9d"
                 name="Real"
                 activeDot={{ r: 8 }}
+              />
+              <Line
+                type="monotone"
+                dataKey="remaining"
+                stroke="#ff8042"
+                name="Restante"
+                strokeDasharray="3 3"
+                dot={false}
               />
             </LineChart>
           </ResponsiveContainer>

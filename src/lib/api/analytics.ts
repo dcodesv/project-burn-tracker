@@ -14,39 +14,53 @@ export class AnalyticsService extends OpenProjectClient {
     this.workPackagesService = new WorkPackagesService();
   }
 
-  async getBurndownData(projectId: string): Promise<BurndownData> {
+  async getBurndownData(
+    projectId: string,
+    sprintId?: string
+  ): Promise<BurndownData> {
+    // In a real implementation, this would fetch and process work package history
+    // For now, we'll return sample data
+
     const today = new Date();
     const dates = [];
     const ideal = [];
     const actual = [];
     const remaining = [];
-    
+
     // Generate 14 days of data
-    let totalPoints = 100;
+    const totalPoints = 100;
     const idealPerDay = totalPoints / 14;
-    
+
     for (let i = 0; i < 14; i++) {
       const date = new Date(today);
       date.setDate(date.getDate() - 13 + i);
-      dates.push(date.toISOString().split('T')[0]);
-      
-      ideal.push(Math.max(0, totalPoints - (idealPerDay * i)));
-      
+      dates.push(date.toISOString().split("T")[0]);
+
+      // Ideal burndown is a straight line
+      ideal.push(Math.max(0, totalPoints - idealPerDay * i));
+
+      // Actual burndown with some variation
       if (i < 7) {
-        actual.push(Math.max(0, totalPoints - (idealPerDay * i * 0.8)));
+        // Less progress in first half
+        actual.push(Math.max(0, totalPoints - idealPerDay * i * 0.8));
       } else {
-        actual.push(Math.max(0, totalPoints - (idealPerDay * i * 1.1)));
+        // More progress in second half
+        actual.push(Math.max(0, totalPoints - idealPerDay * i * 1.1));
       }
-      
+
+      // Remaining work based on actual
       remaining.push(actual[i]);
     }
-    
+
     return { dates, ideal, actual, remaining };
   }
 
   async getWorkloadData(projectId: string): Promise<WorkloadData[]> {
     const members = await this.membersService.getProjectMembers(projectId);
     const workPackages = await this.workPackagesService.getWorkPackages(projectId);
+    
+    console.log("Members : API", members);
+    console.log("Work Packages : API", workPackages);
     
     return members.map(user => {
       const userTasks = workPackages.filter(wp => wp.assignedTo?.id === user.id);

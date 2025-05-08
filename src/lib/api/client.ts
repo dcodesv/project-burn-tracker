@@ -47,7 +47,8 @@ export class OpenProjectClient {
     
     const headers = {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${credentials.apiKey}`,
+      // Cambiamos a Basic Auth como en tu ejemplo
+      'Authorization': `Basic ${btoa('apikey:' + credentials.apiKey)}`,
       ...options.headers,
     };
     
